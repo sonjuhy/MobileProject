@@ -1,0 +1,31 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#EC5656</item>
+        <item name="colorPrimaryDark">#B3B3B3</item>
+        <item name="colorAccent">@android:color/black</item>
+    </style>
+    <style name="LightTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorAccent">#EC5656</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorAccent">#EC5656</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="PopupMenu" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@drawable/popup_round</item>
+    </style>
+</resources>
