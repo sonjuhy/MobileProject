@@ -73,14 +73,7 @@ public class Network extends AsyncTask<String, Void, String> {
             }
 
             httpURLConnection.disconnect();
-            /*else if(!Login_load){
-                mJsonString = stringBuilder.toString().trim();
-                //User_load(name);
-                //User_Cal_load(name);
-                //Cal_load();
-                Login_load = true;
-                return null;
-            }*/
+
             String test = stringBuilder.toString().trim();
             System.out.println("trim : " + test);
             return stringBuilder.toString().trim();

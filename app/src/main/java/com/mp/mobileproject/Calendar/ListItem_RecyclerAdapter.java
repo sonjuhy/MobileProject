@@ -48,13 +48,18 @@ public class ListItem_RecyclerAdapter extends RecyclerView.Adapter<ListItem_Recy
 
     public class ItemViewHolder extends RecyclerView.ViewHolder{
         private TextView textView_name;
+        private  ImageView imageView;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             textView_name = itemView.findViewById(R.id.ListItem_name);
+            imageView = itemView.findViewById(R.id.ListItem_image);
         }
         public void onBind(Listitem_calendar listItem_input, int position_input){
             textView_name.setText(listItem_input.GetName());
+            if(listItem_input.GetType() == 1){
+                imageView.setImageResource(R.drawable.calendar_public);
+            }
             System.out.println("setting recycler view item name : "+listItem_input.GetName());
         }
     }

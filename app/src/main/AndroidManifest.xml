@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/LightTheme">
-        <activity android:name=".Calendar.CalendarPublicActivity"></activity>
+        <activity android:name=".Calendar.PopupActivity"
+            android:theme="@style/PopupMenu">
+        </activity>
+        <activity android:name=".Calendar.CalendarPublicActivity" />
         <activity android:name=".Calendar.CalendarPrivateActivity" />
         <activity android:name=".SigninActivity" />
         <activity android:name=".LoginActivity">
