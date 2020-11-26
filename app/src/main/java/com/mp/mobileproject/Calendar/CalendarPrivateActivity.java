@@ -46,6 +46,7 @@ public class CalendarPrivateActivity extends AppCompatActivity {
         materialCalendarView.setSelectedDate(CalendarDay.today());
         materialCalendarView.addDecorator(new EventDecorator(Color.RED, Collections.singleton(calendarDay)));
 
+        System.out.println("date : " + materialCalendarView.getSelectedDate());
 
         Setting_Data();
     }
@@ -58,9 +59,12 @@ public class CalendarPrivateActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent = new Intent(CalendarPrivateActivity.this, AddCalendarActivity.class);
+        intent.putExtra("Year",2020);
+
         int id = item.getItemId();
         if(id == R.id.action_add){
-
+            startActivity(intent);
             Toast.makeText(getApplicationContext(),"test",Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
