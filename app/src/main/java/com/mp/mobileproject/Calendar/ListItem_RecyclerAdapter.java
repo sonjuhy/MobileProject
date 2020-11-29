@@ -58,7 +58,7 @@ public class ListItem_RecyclerAdapter extends RecyclerView.Adapter<ListItem_Recy
         public void onBind(Listitem_calendar listItem_input, int position_input){
             textView_name.setText(listItem_input.GetName());
             if(listItem_input.GetType() == 1){
-                imageView.setImageResource(R.drawable.calendar_public);
+                imageView.setImageResource(R.drawable.schdule_public);
             }
             System.out.println("setting recycler view item name : "+listItem_input.GetName());
         }

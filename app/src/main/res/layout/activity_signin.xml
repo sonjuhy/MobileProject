@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/signin_button_ok"
+        android:id="@+id/Signin_button_ok"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"

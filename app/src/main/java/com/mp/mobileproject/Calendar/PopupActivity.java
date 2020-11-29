@@ -45,7 +45,8 @@ public class PopupActivity extends AppCompatActivity {
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(PopupActivity.this, ModifyActivity.class);
+                startActivity(intent);
             }
         });
     }

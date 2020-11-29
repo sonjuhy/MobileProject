@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -16,21 +17,52 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.mp.mobileproject.MaterialCalendarView.EventDecorator;
 import com.mp.mobileproject.R;
+import com.mp.mobileproject.User;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
-public class CalendarPublicActivity extends AppCompatActivity {
+import org.threeten.bp.LocalDate;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class CalendarPublicActivity extends AppCompatActivity implements OnMonthChangedListener {
 
     private ListItem_RecyclerAdapter recyclerAdapter;
     private RecyclerView recyclerView;
+    private LocalDate localDate;
+    private MaterialCalendarView materialCalendarView;
+    private String name;
+    private CalendarDay calendarDay;
+
+    private ArrayList<CalendarInfo> calendarInfos;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_public);
 
+        Intent intent = getIntent();
+        name = intent.getStringExtra("Name");
+        calendarInfos = (ArrayList<CalendarInfo>)intent.getSerializableExtra("Cal_info");
+        user = (User)intent.getSerializableExtra("User");
+
         recyclerView = (RecyclerView)findViewById(R.id.linearLayout_public);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
 
+        materialCalendarView = findViewById(R.id.calendarView_public);
+        materialCalendarView.setSelectedDate(CalendarDay.today());
+
+        for(int i=0;i<calendarInfos.size();i++){
+            calendarDay = CalendarDay.from(calendarInfos.get(i).getLocalDate());
+            materialCalendarView.addDecorator(new EventDecorator(Color.CYAN, Collections.singleton(calendarDay)));
+        }
+
+        materialCalendarView.setOnMonthChangedListener(this);
         Setting_Data();
     }
     @Override
@@ -41,9 +73,19 @@ public class CalendarPublicActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent = new Intent(CalendarPublicActivity.this, AddCalendarActivity.class);
+
         int id = item.getItemId();
         if(id == R.id.action_add){
-            Toast.makeText(getApplicationContext(),"test",Toast.LENGTH_SHORT).show();
+            localDate = materialCalendarView.getSelectedDate().getDate();
+            System.out.println("local date month : " + localDate.getDayOfMonth());
+            System.out.println("local date month value : " + localDate.getMonthValue());
+            intent.putExtra("type","public");
+            intent.putExtra("user",name);
+            intent.putExtra("day",localDate.getDayOfMonth());
+            intent.putExtra("month",localDate.getMonthValue());
+            intent.putExtra("year",localDate.getYear());
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -52,9 +94,9 @@ public class CalendarPublicActivity extends AppCompatActivity {
         recyclerAdapter.setContext(this);
         System.out.println("setting adapter");
 
-        recyclerAdapter.addItem(new Listitem_calendar("계정설정",0));
-        recyclerAdapter.addItem(new Listitem_calendar("로그인설정",0));
-        recyclerAdapter.addItem(new Listitem_calendar("업데이트 확인",0));
+        for(int i=0;i<calendarInfos.size();i++){
+            recyclerAdapter.addItem(new Listitem_calendar(calendarInfos.get(i).getName(),1));
+        }
 
         recyclerView.setAdapter(recyclerAdapter);
         recyclerView.addOnItemTouchListener(new CalendarPublicActivity.RecyclerTouchListener(getApplicationContext(), recyclerView, new CalendarPublicActivity.ClickListener() {
@@ -88,6 +130,12 @@ public class CalendarPublicActivity extends AppCompatActivity {
             }
         }));
     }
+
+    @Override
+    public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+        Toast.makeText(getApplicationContext(),"Change month : "+date.getMonth(),Toast.LENGTH_SHORT).show();
+    }
+
     public interface ClickListener{
         void OnClick(View view, int position);
         void OnLongClick(View view, int position);

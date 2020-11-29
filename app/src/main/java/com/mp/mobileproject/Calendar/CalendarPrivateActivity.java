@@ -18,36 +18,57 @@ import android.widget.Toast;
 
 import com.mp.mobileproject.MaterialCalendarView.EventDecorator;
 import com.mp.mobileproject.R;
+import com.mp.mobileproject.User;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
-public class CalendarPrivateActivity extends AppCompatActivity {
+public class CalendarPrivateActivity extends AppCompatActivity implements OnMonthChangedListener {
 
     private ListItem_RecyclerAdapter recyclerAdapter;
     private RecyclerView recyclerView;
+    private CalendarDay calendarDay;
+
     private MaterialCalendarView materialCalendarView;
+    private LocalDate localDate;
+    private String name;
+    private ArrayList<CalendarInfo> calendarInfos;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_private);
 
-        CalendarDay calendarDay = CalendarDay.from(LocalDate.of(2020,11,20));
+        Intent intent = getIntent();
+        name = intent.getStringExtra("Name");
+        calendarInfos = (ArrayList<CalendarInfo>)intent.getSerializableExtra("Cal_info");
+        user = (User)intent.getSerializableExtra("User");
 
         recyclerView = (RecyclerView)findViewById(R.id.linearLayout_private);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
 
         materialCalendarView = findViewById(R.id.calendarView_private);
         materialCalendarView.setSelectedDate(CalendarDay.today());
-        materialCalendarView.addDecorator(new EventDecorator(Color.RED, Collections.singleton(calendarDay)));
 
-        System.out.println("date : " + materialCalendarView.getSelectedDate());
 
+        for(int i=0;i<calendarInfos.size();i++){
+            if(calendarInfos.get(i).getMember().equals(name)){
+                calendarDay = CalendarDay.from(calendarInfos.get(i).getLocalDate());
+                if(calendarInfos.get(i).getType().equals("public")){
+                    materialCalendarView.addDecorator(new EventDecorator(Color.CYAN, Collections.singleton(calendarDay)));
+                }
+                materialCalendarView.addDecorator(new EventDecorator(Color.RED, Collections.singleton(calendarDay)));
+            }
+        }
+
+        materialCalendarView.setOnMonthChangedListener(this);
         Setting_Data();
     }
 
@@ -60,12 +81,18 @@ public class CalendarPrivateActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent intent = new Intent(CalendarPrivateActivity.this, AddCalendarActivity.class);
-        intent.putExtra("Year",2020);
 
         int id = item.getItemId();
         if(id == R.id.action_add){
+            localDate = materialCalendarView.getSelectedDate().getDate();
+            System.out.println("local date month : " + localDate.getDayOfMonth());
+            System.out.println("local date month value : " + localDate.getMonthValue());
+            intent.putExtra("type","private");
+            intent.putExtra("user",name);
+            intent.putExtra("day",localDate.getDayOfMonth());
+            intent.putExtra("month",localDate.getMonthValue());
+            intent.putExtra("year",localDate.getYear());
             startActivity(intent);
-            Toast.makeText(getApplicationContext(),"test",Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -75,11 +102,14 @@ public class CalendarPrivateActivity extends AppCompatActivity {
         recyclerAdapter.setContext(this);
         System.out.println("setting adapter");
 
-        recyclerAdapter.addItem(new Listitem_calendar("계정설정", 0));
-        recyclerAdapter.addItem(new Listitem_calendar("로그인설정", 0));
-        recyclerAdapter.addItem(new Listitem_calendar("업데이트 확인", 0));
-        recyclerAdapter.addItem(new Listitem_calendar("fourth data", 0));
-        recyclerAdapter.addItem(new Listitem_calendar("fiveth data", 0));
+        for(int i=0;i<calendarInfos.size();i++){
+            if(calendarInfos.get(i).getMember().equals(name)){
+                if(calendarInfos.get(i).getType().equals("public")){
+                    recyclerAdapter.addItem(new Listitem_calendar(calendarInfos.get(i).getName(), 1));
+                }
+                recyclerAdapter.addItem(new Listitem_calendar(calendarInfos.get(i).getName(), 0));
+            }
+        }
 
         recyclerView.setAdapter(recyclerAdapter);
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new CalendarPrivateActivity.ClickListener() {
@@ -113,6 +143,12 @@ public class CalendarPrivateActivity extends AppCompatActivity {
             }
         }));
     }
+
+    @Override
+    public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+        Toast.makeText(getApplicationContext(),"Change month : "+date.getMonth(),Toast.LENGTH_SHORT).show();
+    }
+
     public interface ClickListener{
         void OnClick(View view, int position);
         void OnLongClick(View view, int position);

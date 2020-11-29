@@ -9,19 +9,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class Network extends AsyncTask<String, Void, String> {
     private HttpURLConnection httpURLConnection = null;
     private OutputStream outputStream = null;
     private String data = null;
-    private String link = "https://sonjuhy.iptime.org/home";
+    private String link = "https://sonjuhy.iptime.org/Calendar";
     private String line = null;
     private String mJsonString = null;
     private int responseStatusCode = 0;
-    private int mode = 0;
     private boolean upload_mode = false;
 
     private Context context;
@@ -36,7 +37,50 @@ public class Network extends AsyncTask<String, Void, String> {
     public Network(Context context){this.context = context;}
 
     @Override
+    protected void onPreExecute() {
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("로딩 중입니다.");
+        progressDialog.show();
+        super.onPreExecute();
+    }
+
+    @Override
     protected String doInBackground(String... _param) {
+        switch(_param[0]){
+            case "Login":
+                link += "/Login_Check.php";
+                Login_Input(_param[1],_param[2]);
+                upload_mode = true;
+                break;
+            case "SignUp":
+                link += "/SignUp.php";
+                Signin_Input(_param[1], _param[2], _param[3]);//ID, PW, Name
+                upload_mode = true;
+                break;
+            case "SignUp_IDCheck":
+                link += "/SignUP_IDCheck.php";
+                OverlapID_Input(_param[1]);
+                upload_mode = true;
+                break;
+            case "SignUp_UserCheck":
+                link += "/SignUP_UserCheck.php";
+                OverlapName_Input(_param[1]);
+                upload_mode = true;
+                break;
+            case "Add_Calendar":
+                link += "/Add_Calendar.php";
+                AddCal_fun(_param[1],_param[2], _param[3], _param[4], _param[5], _param[6], _param[7]);
+                //name, content, year, month, day, user, type
+                upload_mode = true;
+                break;
+            case "Get_Calendar":
+                link += "/Get_Calendar.php";
+                GetCal_fun(_param[1]);//name
+                upload_mode = true;
+                break;
+        }
         try{
             url = new URL(link);
             httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -85,5 +129,69 @@ public class Network extends AsyncTask<String, Void, String> {
         }
 
         return "Error";
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        progressDialog.dismiss();
+        super.onPostExecute(s);
+    }
+
+    private void Login_Input(String user_id, String user_pw){
+        try {
+            data = URLEncoder.encode("ID", "UTF-8") + "=" + URLEncoder.encode(user_id, "UTF-8");
+            data += "&" + URLEncoder.encode("PW", "UTF-8") + "=" + URLEncoder.encode(user_pw, "UTF-8");
+            System.out.println("Sign data : " + data);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void Signin_Input(String user_id, String user_pw, String user_name){
+        try {
+            data = URLEncoder.encode("ID", "UTF-8") + "=" + URLEncoder.encode(user_id, "UTF-8");
+            data += "&" + URLEncoder.encode("Name","UTF-8")+"="+ URLEncoder.encode(user_name,"UTF-8");
+            data += "&" + URLEncoder.encode("PW", "UTF-8") + "=" + URLEncoder.encode(user_pw, "UTF-8");
+            System.out.println("Sign data : " + data);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void OverlapID_Input(String ID){
+        try {
+            data = URLEncoder.encode("ID","UTF-8")+"="+URLEncoder.encode(ID,"UTF-8");
+            System.out.println("Sign data : " + data);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void OverlapName_Input(String Name){
+        try {
+            data = URLEncoder.encode("Name","UTF-8")+"="+URLEncoder.encode(Name,"UTF-8");
+            System.out.println("Sign data : " + data);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void AddCal_fun(String name, String content, String year, String month, String day, String user, String type){
+        try {
+            data = URLEncoder.encode("Name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8");
+            data += "&" + URLEncoder.encode("Content", "UTF-8") + "=" + URLEncoder.encode(content, "UTF-8");
+            data += "&" + URLEncoder.encode("Member", "UTF-8") + "=" + URLEncoder.encode(user, "UTF-8");
+            data += "&" + URLEncoder.encode("Type", "UTF-8") + "=" + URLEncoder.encode(type, "UTF-8");
+            data += "&" + URLEncoder.encode("Year", "UTF-8") + "=" + URLEncoder.encode(year, "UTF-8");
+            data += "&" + URLEncoder.encode("Month", "UTF-8") + "=" + URLEncoder.encode(month, "UTF-8");
+            data += "&" + URLEncoder.encode("Day", "UTF-8") + "=" + URLEncoder.encode(day, "UTF-8");
+            System.out.println("add data : " + data);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void GetCal_fun(String Name){
+        try {
+            data = URLEncoder.encode("Name","UTF-8")+"="+URLEncoder.encode(Name,"UTF-8");
+            System.out.println("Sign data : " + data);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }
