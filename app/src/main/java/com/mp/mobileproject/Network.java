@@ -80,6 +80,17 @@ public class Network extends AsyncTask<String, Void, String> {
                 GetCal_fun(_param[1]);//name
                 upload_mode = true;
                 break;
+            case "Update_Calendar":
+                link += "/Update_Calendar.php";
+                Update_Calendar(_param[1],_param[2],_param[3]);//name content count
+                upload_mode = true;
+                break;
+            case "Delete_Calendar":
+                link += "/Delete_Calendar.php";
+
+                Delete_Calendar(_param[1]);//count
+                upload_mode = true;
+                break;
         }
         try{
             url = new URL(link);
@@ -189,6 +200,25 @@ public class Network extends AsyncTask<String, Void, String> {
     private void GetCal_fun(String Name){
         try {
             data = URLEncoder.encode("Name","UTF-8")+"="+URLEncoder.encode(Name,"UTF-8");
+            System.out.println("Sign data : " + data);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void Update_Calendar(String name, String Content, String count){
+        try {
+            data = URLEncoder.encode("Name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8");
+            data += "&" + URLEncoder.encode("Content", "UTF-8") + "=" + URLEncoder.encode(Content, "UTF-8");
+            data += "&" + URLEncoder.encode("Count", "UTF-8") + "=" + URLEncoder.encode(count, "UTF-8");
+            System.out.println("Sign data : " + data);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void Delete_Calendar(String count){
+        System.out.println("Network delete param : " + count);
+        try {
+            data = URLEncoder.encode("Count", "UTF-8") + "=" + URLEncoder.encode(count, "UTF-8");
             System.out.println("Sign data : " + data);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

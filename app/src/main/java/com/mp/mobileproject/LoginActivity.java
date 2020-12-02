@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox AutoLogin_CheckBox;
     private EditText ID, PW;
     private String Frist_ID = "Admin", Frist_PW ="0000",Save_ID = "", Save_PW = "";
-    private String auto_id, auto_pw;
+    private String auto_id, auto_pw, auto_Name;
     private boolean AutoLoginCheck = false;
     public static SharedPreferences auto;
 

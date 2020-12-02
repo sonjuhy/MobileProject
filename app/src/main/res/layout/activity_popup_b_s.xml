@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/popup_round"
-    tools:context=".Calendar.PopupActivity">
+    tools:context=".BackupRestore.PopupBSActivity">
 
     <!-- 타이틀바 -->
     <LinearLayout
@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/popup_name"
-            android:text="File Name"
+            android:text="백업 및 복원"
             android:textSize="20sp"
             android:textColor="#000000"
             android:gravity="center"
@@ -32,10 +31,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/popup_content"
+            android:id="@+id/popup_bs_content"
             android:textSize="15sp"
             android:textColor="#000"
             android:alpha="0.87"
+            android:hint="선택된 파일 없음."
             android:gravity="center"
             android:layout_marginBottom="3dp"
             android:layout_width="match_parent"
@@ -56,30 +56,30 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/popup_delete"
+            android:id="@+id/popup_bs_backup"
             android:layout_width="153dp"
             android:layout_height="53dp"
             android:background="#00000000"
             android:gravity="center"
             android:padding="16dp"
-            android:text="삭제"
+            android:text="백업"
             android:textColor="#000000"
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/popup_modify"
+            android:id="@+id/popup_bs_restore"
             android:layout_width="139dp"
             android:layout_height="53dp"
             android:background="#00000000"
             android:gravity="center"
             android:padding="16dp"
-            android:text="수정"
+            android:text="복구"
             android:textColor="#000000"
             android:textSize="15sp" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/popup_close"
+        android:id="@+id/popup_bs_close"
         android:layout_width="match_parent"
         android:layout_height="53dp"
         android:background="#00000000"

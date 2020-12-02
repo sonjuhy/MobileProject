@@ -25,6 +25,8 @@ public class AddCalendarActivity extends AppCompatActivity {
     private String Name_str, Content_str, type, user;
     private int day, month, year;
 
+    private final int RESULT_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +69,18 @@ public class AddCalendarActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"내용을 작성하세요.",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    AddCal_fun(Name_str,Content_str,Integer.toString(year),Integer.toString(month),Integer.toString(day),user, type);
+                    //AddCal_fun(Name_str,Content_str,Integer.toString(year),Integer.toString(month),Integer.toString(day),user, type);
+                    Intent result_intent = new Intent();
+                    result_intent.putExtra("Name",Name_str);
+                    result_intent.putExtra("Content",Content_str);
+                    result_intent.putExtra("Year",Integer.toString(year));
+                    result_intent.putExtra("Month",Integer.toString(month));
+                    result_intent.putExtra("Day",Integer.toString(day));
+                    result_intent.putExtra("User",user);
+                    result_intent.putExtra("Type",type);
+                    setResult(RESULT_CODE, result_intent);
+                    finish();
                 }
-                //network
             }
         });
         Cancle.setOnClickListener(new View.OnClickListener() {

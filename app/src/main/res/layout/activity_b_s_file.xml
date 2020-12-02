@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".BackupRestore.BSFileActivity">
+
+    <RelativeLayout
+        android:id="@+id/relative_BS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="15dp"
+        android:clipToPadding="true"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView_BS"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/BS_titleView"
+            android:layout_width="399dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="center_horizontal"
+            android:text="선택된 백업 파일"
+            android:textSize="25dp"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/BS_subView"
+            android:layout_width="399dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@id/BS_titleView"
+            android:gravity="center_horizontal"
+            android:text="link"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_BS"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:horizontalSpacing="10dp"
+        android:numColumns="3"
+        android:verticalSpacing="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relative_BS"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
